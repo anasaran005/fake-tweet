@@ -67,7 +67,9 @@ export default function Home() {
       const link = document.createElement('a');
       link.download = `fake-tweet.${downloadFormat}`;
       link.href = dataUrl;
+      document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
     } catch (err) {
       console.error('Failed to generate image', err);
       alert('Failed to generate image. Please try again.');
