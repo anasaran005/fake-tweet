@@ -1,64 +1,109 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+
+import React, { useState, useRef } from 'react';
+import styles from './page.module.css';
+import Controls from '../components/Controls';
+import TweetPreview from '../components/TweetPreview';
+import ExportPanel from '../components/ExportPanel';
+import { toPng, toJpeg, toSvg } from 'html-to-image';
 
 export default function Home() {
+  const [name, setName] = useState("Raj Shamani");
+  const [username, setUsername] = useState("rajshamani");
+  const [content, setContent] = useState("Speed is the most underrated advantage. The fast people don't always win, but the slow ones get filtered out before the real game even starts.");
+  const [avatar, setAvatar] = useState("");
+  const [verified, setVerified] = useState(true);
+  const [bgColor, setBgColor] = useState("#000000");
+  const [downloadFormat, setDownloadFormat] = useState("png");
+  const [aspectRatio, setAspectRatio] = useState("auto");
+  
+  const tweetRef = useRef(null);
+
+  React.useEffect(() => {
+    const saved = localStorage.getItem('tweetProfile');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed.name) setName(parsed.name);
+        if (parsed.username) setUsername(parsed.username);
+        if (parsed.avatar) setAvatar(parsed.avatar);
+        if (parsed.verified !== undefined) setVerified(parsed.verified);
+      } catch(e) {
+        console.error("Failed to parse saved profile");
+      }
+    }
+  }, []);
+
+  const handleSaveProfile = () => {
+    localStorage.setItem('tweetProfile', JSON.stringify({ name, username, avatar, verified }));
+    alert('Profile saved as default!');
+  };
+
+  const handleDownload = async () => {
+    if (!tweetRef.current) return;
+
+    try {
+      const element = tweetRef.current;
+      const options = {
+        pixelRatio: 3,
+        quality: 1,
+      };
+
+      let dataUrl;
+      switch (downloadFormat) {
+        case 'jpeg':
+          dataUrl = await toJpeg(element, options);
+          break;
+        case 'svg':
+          dataUrl = await toSvg(element, options);
+          break;
+        case 'png':
+        default:
+          dataUrl = await toPng(element, options);
+          break;
+      }
+
+      const link = document.createElement('a');
+      link.download = `fake-tweet.${downloadFormat}`;
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      console.error('Failed to generate image', err);
+      alert('Failed to generate image. Please try again.');
+    }
+  };
+
   return (
-    <div className={styles.page}>
+    <div className={styles.container}>
       <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.js file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+        <div className={styles.controlsSection}>
+          <Controls 
+            name={name} setName={setName}
+            username={username} setUsername={setUsername}
+            content={content} setContent={setContent}
+            avatar={avatar} setAvatar={setAvatar}
+            verified={verified} setVerified={setVerified}
+            bgColor={bgColor} setBgColor={setBgColor}
+            onSaveProfile={handleSaveProfile}
+          />
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className={styles.previewSection}>
+          <h1 className={styles.title}>Fake Tweet Generator</h1>
+          <TweetPreview 
+            ref={tweetRef}
+            name={name}
+            username={username}
+            content={content}
+            avatar={avatar}
+            verified={verified}
+            bgColor={bgColor}
+            aspectRatio={aspectRatio}
+          />
+          <ExportPanel
+            onDownload={handleDownload}
+            downloadFormat={downloadFormat} setDownloadFormat={setDownloadFormat}
+            aspectRatio={aspectRatio} setAspectRatio={setAspectRatio}
+          />
         </div>
       </main>
     </div>
