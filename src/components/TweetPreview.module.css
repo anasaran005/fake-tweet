@@ -105,3 +105,53 @@
   font-weight: 400;
   letter-spacing: -0.01em;
 }
+
+@media (max-width: 768px) {
+  .captureContainer {
+    padding: 2rem;
+  }
+
+  .tweetCard {
+    width: 100%;
+  }
+
+  .content {
+    font-size: 1.3rem;
+  }
+
+  .avatarContainer {
+    width: 52px;
+    height: 52px;
+  }
+
+  .name {
+    font-size: 1.15rem;
+  }
+
+  .username {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .captureContainer {
+    padding: 1rem;
+  }
+  
+  .content {
+    font-size: 1.15rem;
+  }
+  
+  .avatarContainer {
+    width: 44px;
+    height: 44px;
+  }
+  
+  .name {
+    font-size: 1.05rem;
+  }
+  
+  .username {
+    font-size: 0.95rem;
+  }
+}

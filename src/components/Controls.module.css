@@ -247,3 +247,18 @@
 .downloadButton:hover::after {
   left: 150%;
 }
+
+@media (max-width: 768px) {
+  .controlsContainer {
+    padding: 1.5rem;
+    gap: 1.25rem;
+  }
+
+  .exportControls {
+    flex-direction: column;
+  }
+
+  .select {
+    width: 100%;
+  }
+}

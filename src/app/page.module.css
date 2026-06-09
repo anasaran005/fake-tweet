@@ -64,3 +64,16 @@
     width: 100%;
   }
 }
+
+@media (max-width: 768px) {
+  .title {
+    position: static;
+    margin: 1.5rem auto 0;
+    display: table;
+  }
+
+  .main {
+    padding: 1rem;
+    gap: 1.5rem;
+  }
+}
