@@ -53,15 +53,85 @@
   position: relative;
 }
 
+.mobileMenuButton {
+  display: none;
+  position: fixed;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  width: 44px;
+  height: 44px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.mobileMenuButton span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #fff;
+  transition: all 0.3s;
+}
+
+.mobileMenuButton.open span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+.mobileMenuButton.open span:nth-child(2) {
+  opacity: 0;
+}
+.mobileMenuButton.open span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+.overlay {
+  display: none;
+}
+
 @media (max-width: 1024px) {
   .main {
     flex-direction: column;
     padding: 2rem;
   }
   
+  .mobileMenuButton {
+    display: flex;
+  }
+
+  .overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 800;
+  }
+  
   .controlsSection {
-    flex: 1;
-    width: 100%;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 350px;
+    max-width: 85vw;
+    height: 100vh;
+    background: #111;
+    z-index: 900;
+    padding: 6rem 1.5rem 2rem;
+    overflow-y: auto;
+    transition: left 0.3s ease;
+    box-shadow: 20px 0 40px rgba(0,0,0,0.5);
+    box-sizing: border-box;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .controlsSection.open {
+    left: 0;
   }
 }
 

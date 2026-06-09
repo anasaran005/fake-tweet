@@ -16,6 +16,7 @@ export default function Home() {
   const [bgColor, setBgColor] = useState("#000000");
   const [downloadFormat, setDownloadFormat] = useState("png");
   const [aspectRatio, setAspectRatio] = useState("auto");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
   const tweetRef = useRef(null);
 
@@ -76,7 +77,21 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <main className={styles.main}>
-        <div className={styles.controlsSection}>
+        <button 
+          className={`${styles.mobileMenuButton} ${isSidebarOpen ? styles.open : ''}`}
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          aria-label="Toggle Menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        
+        {isSidebarOpen && (
+          <div className={styles.overlay} onClick={() => setIsSidebarOpen(false)} />
+        )}
+
+        <div className={`${styles.controlsSection} ${isSidebarOpen ? styles.open : ''}`}>
           <Controls 
             name={name} setName={setName}
             username={username} setUsername={setUsername}

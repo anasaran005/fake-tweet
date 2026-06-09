@@ -1,27 +1,54 @@
-.exportPanel {
+.exportPanelContainer {
   position: absolute;
   bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  padding: 1rem 1.5rem;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   gap: 1rem;
   z-index: 100;
 }
 
-.subtitle {
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: 500;
+.exportToggleButton {
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.6rem 1.5rem;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+  font-family: inherit;
+}
+
+.exportToggleButton:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.exportControlsWrapper {
+  background: #0b0b0b;
+  padding: 1rem 1.5rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .exportControls {
@@ -75,10 +102,23 @@
   font-family: inherit;
   cursor: pointer;
   transition: all 0.3s;
-  margin-top: 0;
   padding: 0 1.5rem;
 }
 
 .downloadButton:hover {
   background: #ccc;
+}
+
+@media (max-width: 768px) {
+  .exportControls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .selectGroup {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .select {
+    width: 100%;
+  }
 }
